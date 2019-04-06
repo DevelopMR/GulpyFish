@@ -485,13 +485,9 @@ class Genome {
       textFont('Arial');
       for (var i = 0; i < nodePoses.length; i++) {
         fill(255);
-        //stroke(0);
         strokeWeight(1);
         ellipse(nodePoses[i].x, nodePoses[i].y, 20, 20);
-        //textSize(10);
         fill(0);
-        //textAlign(CENTER, CENTER);
-        //textFont('Arial');
         text(nodeNumbers[i], nodePoses[i].x, nodePoses[i].y);
   
       }
@@ -510,12 +506,12 @@ class Genome {
       fill(230,230,100);
       text(player.vision0.toFixed(3) + " | yVel", tPosX, yTop);
       text(player.vision1.toFixed(3) + " | xPos", tPosX, yTop + ySPacer);
-      textSize(14);
+      textSize(16);
       text(player.vision2.toFixed(3) + " |Ahead", tPosX, yTop + 2*ySPacer);
       textSize(12);
       text(player.vision3.toFixed(3) + " | Abv", tPosX, yTop + 3*ySPacer);
       text(player.vision4.toFixed(3) + " | Bel", tPosX, yTop + 4*ySPacer);
-      textSize(14);
+      textSize(16);
       text(player.vision5.toFixed(3) + " |Behind", tPosX, yTop + 5*ySPacer);
       textSize(12);
       text(player.vision6.toFixed(3) + " | Abv", tPosX, yTop + 6*ySPacer);
@@ -534,39 +530,35 @@ class Genome {
       var res2 = player.response2.toFixed(3);
       var res3 = player.response3.toFixed(3);
 
-      var yTop2 = 584;
+      var yTop2 = 581;
       var ySpacer2 = 50;
 
-      //fill(0);
       fill(230,230,100);
+
       if (res0 > .6) {
         fill(255,0,0);
       }
-      text(player.response0.toFixed(3) + " |Up\Lt", tPosX + w - 85, yTop2);
-      //fill(0);
+      text(player.response0.toFixed(3) + " |Up\Lt", canvas.width - 45, yTop2);
       fill(230,230,100);
 
       if (res1 > .6) {
         fill(255,0,0);
       }
-      text(player.response1.toFixed(3) + " |Dn\Rt", tPosX + w - 85, yTop2 + ySpacer2);
-      //fill(0);     
+      text(player.response1.toFixed(3) + " |Dn\Rt", canvas.width - 45, yTop2 + ySpacer2); 
       fill(230,230,100);
 
       if (res2 > .6) {
         fill(255,0,0);
       }
-      text(player.response2.toFixed(3) + " |Up/Rt", tPosX + w - 80, yTop2 + 2*ySpacer2);
-      //fill(0);
+      text(player.response2.toFixed(3) + " |Up/Rt", canvas.width - 40, yTop2 + 2*ySpacer2);
       fill(230,230,100);
 
       if (res3 > .6) {
         fill(255,0,0);
       }
-      text(player.response3.toFixed(3) + " |Dn/Lt", tPosX + w - 90, yTop2 + 3*ySpacer2);
-      //fill(0);
+      text(player.response3.toFixed(3) + " |Dn/Lt", canvas.width - 40, yTop2 + 3*ySpacer2);
       fill(230,230,100);
- 
+
       textStyle(NORMAL);
     }
 

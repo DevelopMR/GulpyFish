@@ -5,7 +5,8 @@ class Player {
     this.y = canvas.height / 2;
     this.velY = 0;
     this.velX = panSpeed;
-    this.size = 40;
+    this.intent = 0; // similar to y velocity
+    this.size = 40; // width ? 
     this.dead = false;
     this.isOnGround = false;
     this.deadOnGroundCount = 0;
@@ -16,10 +17,15 @@ class Player {
     this.pipes3 = new PipePair(false, this.pipes2, this.pipeRandomNo);
     this.pipes4 = new PipePair(false, this.pipes3, this.pipeRandomNo);
 
-    this.pipes1.setX(canvas.width - this.pipes2.topPipe.width);
+    /* this.pipes1.setX(canvas.width - this.pipes2.topPipe.width);
     this.pipes2.setX(1.5 * canvas.width + this.pipes2.topPipe.width / 2);
     this.pipes3.setX(0 + this.pipes2.topPipe.width / 2);
-    this.pipes4.setX(-.5 * canvas.width + this.pipes2.topPipe.width / 2);
+    this.pipes4.setX(-.5 * canvas.width + this.pipes2.topPipe.width / 2); */
+
+    this.pipes1.setX(850);
+    this.pipes2.setX(1650);
+    this.pipes3.setX(-100);
+    this.pipes4.setX(-450);
 
     this.pipeRandomNo++;
     this.ground = new Ground();
@@ -38,10 +44,10 @@ class Player {
     this.vision7 = 0; // height below Furthest
     this.vision8 = 0; // wave cycle in degrees
     // Response values
-    this.response0 = 0; // flap
-    this.response1 = 0; // drop
-    this.response2 = 0; // "right"
-    this.response3 = 0; // "left"
+    this.response0 = 0; // flap up left
+    this.response1 = 0; // drop down right
+    this.response2 = 0; // "right" up right
+    this.response3 = 0; // "left" down left
 
 
     //-----------------------------------------------------------------------
@@ -53,11 +59,11 @@ class Player {
     this.lifespan = 0; //how long the player lived for this.fitness
     this.bestScore = 0; //stores the this.score achieved used for replay
     this.dead = false;
-    this.score = -2; // 0
+    this.score = -2; // 0  account for two new pipes to the left
     this.gen = 0;
 
-    //this.genomeInputs = 4;
-    //this.genomeOutputs = 1;
+    this.species = 0;
+
     this.genomeInputs = 10;
     this.genomeOutputs = 4;
 
@@ -65,9 +71,9 @@ class Player {
   }
 
 
+
   show() {
 
-    // each player carrying pipes - can this be pulled out?
     this.pipes1.show();
     this.pipes2.show(); 
     this.pipes3.show();
@@ -75,39 +81,200 @@ class Player {
 
     push();
     translate(this.x - this.size / 2 - 8 + birdSprite.width / 2, this.y - this.size / 2 + birdSprite.height / 2);
-    if (this.velY < -10) {
+
+    // this.intent
+
+    // if (this.velY < -10) {
+    if (this.intent < -10) {
       rotate(-PI / 6);
       this.fallRotation = -PI / 6;
-    } else if (this.velY <= 0) {
-      this.fallRotation -= PI / 96.0;
-      this.fallRotation = constrain(this.fallRotation, -PI / 6, PI / 3);
+    //} else if (this.velY <= 0) {
+    } else if (this.intent <= 0) {
+      this.fallRotation -= PI / 48.0;
+      this.fallRotation = constrain(this.fallRotation, -PI / 6, PI / 3.5);
       rotate(this.fallRotation);
-      // rotate(map(this.velY, 10, 25, -PI / 6, PI / 2));
-    } else if (this.velY <= 15) {
-      this.fallRotation += PI / 96.0;
-      this.fallRotation = constrain(this.fallRotation, -PI / 6, PI / 3);
+      
+    //} else if (this.velY <= 15) {
+    } else if (this.intent <= 15) {
+      this.fallRotation += PI / 48.0;
+      this.fallRotation = constrain(this.fallRotation, -PI / 6, PI / 3.5);
       rotate(this.fallRotation);
-      // rotate(map(this.velY, 10, 25, -PI / 6, PI / 2));
-    }else {
-      rotate(PI / 3);
+      
+    }else if (this.intent == 0) {
+      this.fallRotation = 0;
+      rotate(this.fallRotation);
+    } else {
+      rotate(PI / 3.5);
     }
 
    
-    // set bird
+    // display bird
     if(this.isBest){
-      //tint(10, 220, 255, 255);
       image(bestBirdSprite, -76, -70, 114, 105);
-      //image(birdSprite, -birdSprite.width / 2, -birdSprite.height / 2, 114, 105); //, 76, 70   , 114, 105
     }
     else{
-      image(birdSprite, -76, -70, 114, 105);
+
+        // generations have different images
+        // ** try fitness
+        var genMOD = int(this.fitness) % 16;
+        // var genMOD = this.species % 15;
+        var chosenSprite = birdSprite;
+
+        switch (genMOD)
+        {
+          case 0:
+            chosenSprite = fishGen1Sprite;
+            break;
+          case 1:
+            chosenSprite = fishGen2Sprite;
+            break;
+          case 2:
+            chosenSprite = fishGen3Sprite;
+            break;
+          case 3:
+            chosenSprite = fishGen4Sprite;
+            break;
+          case 4:
+            chosenSprite = fishGen5Sprite;
+            break;
+          case 5:
+            chosenSprite = fishGen6Sprite;
+            break;
+          case 6:
+            chosenSprite = fishGen7Sprite;
+            break;
+          case 7:
+            chosenSprite = fishGen8Sprite;
+            break;
+          case 8:
+            chosenSprite = fishGen9Sprite;
+            break;
+          case 9:
+            chosenSprite = fishGen10Sprite;
+            break;
+          case 10:
+            chosenSprite = fishGen11Sprite;
+            break;
+          case 11:
+            chosenSprite = fishGen12Sprite;
+            break;
+          case 12:
+            chosenSprite = fishGen13Sprite;
+            break;
+          case 13:
+            chosenSprite = fishGen14Sprite;
+            break;
+          case 14:
+            chosenSprite = fishGen15Sprite;
+            break;
+        }
+
+
+      image(chosenSprite, -76, -70, 114, 105);
       //image(birdSprite, -birdSprite.width / 2, -birdSprite.height / 2, 114, 105); // , 114, 105
     }
     
     pop();
 
+  // display Best Fish metrics
+    if(this.isBest){
+      this.showBestMetrics();
+    }
+
     this.ground.show();
   }
+
+
+  
+
+  showBestMetrics(){
+    var bestBird = this;
+    // overlay Vision Data
+  
+    push();
+    translate(this.x, this.y);
+  
+    // Vision 1 x pos
+    strokeWeight(1);
+    stroke(50, 50, 50);
+    line(0, 0, -bestBird.vision1, 0);
+  
+    // Vision 2 distance Ahead
+    stroke(0,128,0);
+    line(0, 1, 0 + bestBird.vision2, 0+1);
+    line(0 + bestBird.vision2, -19, bestBird.vision2, 0+21);
+  
+  
+    // Vision 3 closestOver
+    stroke(24,100,50);
+    line(0, 0, 0, 0 + bestBird.vision3);
+    line(0, 0 + bestBird.vision3, 25, bestBird.vision3);
+  
+    // Vision 4 closestBelow (minus sign)
+    stroke(40,128,68);
+    line(0, 0, 0, 0 - bestBird.vision4);
+    line(0, 0 - bestBird.vision4, 25, - bestBird.vision4);
+  
+    // Vision 5 distance Behind
+    stroke(128,0,0);
+    line(0, 1, 0 + bestBird.vision5, 0+1);
+    line(0 + bestBird.vision5, -19, bestBird.vision5, 0+21);
+  
+    // Vision 6 Furthest Over
+    stroke(255,80,132);
+    line(-1, 0, -1, bestBird.vision6);
+    line(-1, bestBird.vision6, -26, bestBird.vision6);
+  
+    // Vision 7  Furthest Below (minus sign)
+    stroke(128,20,68);
+    line(-1, 0, 0 - 1, -bestBird.vision7);
+    line(-1, -bestBird.vision7, -26, -bestBird.vision7);
+  
+  
+    // Vision 0 y velocity (here for layering's sake)
+    strokeWeight(2);
+    stroke(255, 255, 0);
+    fill(255, 128, 0);
+    line(0, 0, 0, 3*bestBird.vision0);
+    ellipse(0, 3*bestBird.vision0, 4, 4);
+  
+    // Vision 8-9 Wave
+    strokeWeight(2);
+    stroke(255,255,255);
+    fill(128, 128, 128);
+    line(0, 0, 10* bestBird.vision8, 10* bestBird.vision9);
+    ellipse(10* bestBird.vision8, 10* bestBird.vision9, 4, 4);
+
+    // responses
+    if (this.response0 >.6)
+    {
+      stroke(255,0,0);
+      line(0, 0, -15, -15);
+      ellipse(-15, -15, 4, 4);
+    }
+    if (this.response1 >.6)
+    {
+      stroke(255,0,0);
+      line(0, 0, 15, 15);
+      ellipse(15, 15, 4, 4);
+    }
+    if (this.response2 >.6)
+    {
+      stroke(255,0,0);
+      line(0, 0, 15, -15);
+      ellipse(15, -15, 4, 4);
+    }
+    if (this.response3 >.6)
+    {
+      stroke(255,0,0);
+      line(0, 0, -15, 15);
+      ellipse(-15, 15, 4, 4);
+    }
+
+    pop();
+  }
+
+
 
   move() {
     this.velY += gravity + waveY;
@@ -121,11 +288,10 @@ class Player {
     if (!this.isOnGround) {
       this.y += this.velY;
       this.x += this.velX;
-      // do x
-      //this.x += this.velX;
     }
 
   }
+
 
   updatePipes() {
     this.pipes1.update();
@@ -137,26 +303,59 @@ class Player {
     //if either pipe is off the screen then reset the pipe
     //  ** REDEFINED "offscreen" to mean 1000 px past each border
     if (this.pipes1.offScreen()) {
-      this.pipes1 = new PipePair(false, this.pipes4, this.pipeRandomNo);
+      this.pipes1 = new PipePair(false, this.pipes3, this.pipeRandomNo);
       this.pipeRandomNo++;
+
+      if (this.pipes1.bottomPipe.x <= this.pipes3.bottomPipe.x + 500)
+      {
+        this.pipes1.bottomPipe.x = this.pipes3.bottomPipe.x + 600;
+      }
     }
     if (this.pipes2.offScreen()) {
-      this.pipes2 = new PipePair(false, this.pipes3, this.pipeRandomNo);
+      this.pipes2 = new PipePair(false, this.pipes1, this.pipeRandomNo);
       this.pipeRandomNo++;
+
+      if (this.pipes2.bottomPipe.x <= this.pipes1.bottomPipe.x + 500)
+      {
+        this.pipes2.bottomPipe.x = this.pipes1.bottomPipe.x + 600;
+      }
+
     }
     if (this.pipes3.offScreen()) {
-      this.pipes3 = new PipePair(false, this.pipes2, this.pipeRandomNo);
+      this.pipes3 = new PipePair(false, this.pipes4, this.pipeRandomNo);
       this.pipeRandomNo++;
+
+      if (this.pipes3.bottomPipe.x <= this.pipes1.bottomPipe.x + 500)
+      {
+        this.pipes3.bottomPipe.x = this.pipes1.bottomPipe.x + 600;
+      }
     }
+
     if (this.pipes4.offScreen()) {
-      this.pipes4 = new PipePair(false, this.pipes1, this.pipeRandomNo);
+      this.pipes4 = new PipePair(false, this.pipes2, this.pipeRandomNo);
       this.pipeRandomNo++;
+
+      if (this.pipes4.bottomPipe.x <= this.pipes2.bottomPipe.x + 500)
+      {
+        this.pipes14.bottomPipe.x = this.pipes2.bottomPipe.x + 600;
+      }
     }
   }
 
   update() {
     this.lifespan++;
     this.updatePipes();
+
+    //  intent leveling, adds notion of time to player choices
+    if (this.intent < -4)
+    {
+      this.intent += 4;
+    } else if (this.intent > 4)
+    {
+      this.intent -= 4;
+    }
+
+
     this.move();
 
     var halfWay = this.x - this.size / 2;
@@ -185,17 +384,31 @@ class Player {
     if (!this.dead) {
       pauseBecauseDead = false;
     }
+    
     if (this.pipes1.colided(this)) {
       this.dead = true;
+      this.isBest = false;
       pauseBecauseDead = true;
     }
     if (this.pipes2.colided(this)) {
       pauseBecauseDead = true;
+      this.isBest = false;
+      this.dead = true;
+    }
+    if (this.pipes3.colided(this)) {
+      this.dead = true;
+      this.isBest = false;
+      pauseBecauseDead = true;
+    }
+    if (this.pipes4.colided(this)) {
+      pauseBecauseDead = true;
+      this.isBest = false;
       this.dead = true;
     }
 
     if (this.ground.collided(this)) {
       this.dead = true;
+      this.isBest = false;
       this.isOnGround = true;
       pauseBecauseDead = true;
     }
@@ -204,12 +417,14 @@ class Player {
      if (this.x < 0)
      {
       this.dead = true;
+      this.isBest = false;
       pauseBecauseDead = true;
      }
 
      if (this.x > canvas.width)
      {
       this.dead = true;
+      this.isBest = false;
       pauseBecauseDead = true;
      }
 
@@ -217,6 +432,7 @@ class Player {
      if (this.y < -30)
      {
       this.dead = true;
+      this.isBest = false;
       pauseBecauseDead = true;
      }
 
@@ -232,6 +448,7 @@ class Player {
     if (!this.dead && !this.isOnGround) {
       this.velY = -4;
       this.velX = -4; // new up and left
+      this.intent -= 1;
     }
   }
 
@@ -239,6 +456,7 @@ class Player {
     if (!this.dead && !this.isOnGround) {
       this.velY = 4;
       this.velX = 4; // new drop right
+      this.intent += 1;
     }
 
   }
@@ -247,6 +465,7 @@ class Player {
     if (!this.dead && !this.isOnGround) {
         this.velX = 4;
         this.velY = -4; // new right up
+        this.intent -= 1;
     }
   }
 
@@ -254,6 +473,7 @@ class Player {
     if (!this.dead && !this.isOnGround) {
         this.velX = -4;
         this.velY = 4; // new left down
+        this.intent += 1;
     }
   }
 

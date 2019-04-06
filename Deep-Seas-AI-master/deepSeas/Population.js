@@ -67,68 +67,11 @@ class Population {
       }
 
       // puts the Best on top
-      //if (!bestBird.dead) {
+      if (!bestBird.dead) {
         
         bestBird.show();
-        
 
-        // overlay Vision Data
-        var bBx = bestBird.x;// Best Bird x position
-
-        
-
-        // Vision 1 x pos
-        strokeWeight(1);
-        stroke(200, 200, 200, 255);
-        line(bestBird.x, bestBird.y, bestBird.x - bestBird.vision1, bestBird.y);
-
-        // Vision 2 distance Ahead
-        stroke(0,128,0);
-        line(bestBird.x, bestBird.y+1, bestBird.x + bestBird.vision2, bestBird.y+1);
-        line(bestBird.x + bestBird.vision2, bestBird.y-19, bestBird.x + bestBird.vision2, bestBird.y+21);
-
-
-        // Vision 3 closestOver
-        stroke(24,100,50);
-        line(bestBird.x, bestBird.y, bestBird.x, bestBird.y + bestBird.vision3);
-        line(bestBird.x, bestBird.y + bestBird.vision3, bestBird.x + 25, bestBird.y + bestBird.vision3);
-
-        // Vision 4 closestBelow (minus sign)
-        stroke(40,128,68);
-        line(bestBird.x, bestBird.y, bestBird.x, bestBird.y - bestBird.vision4);
-        line(bestBird.x, bestBird.y - bestBird.vision4, bestBird.x + 25, bestBird.y - bestBird.vision4);
-
-        // Vision 5 distance Behind
-        stroke(128,0,0);
-        line(bestBird.x, bestBird.y+1, bestBird.x + bestBird.vision5, bestBird.y+1);
-        line(bestBird.x + bestBird.vision5, bestBird.y-19, bestBird.x + bestBird.vision5, bestBird.y+21);
-
-        // Vision 6 Furthest Over
-        stroke(255,80,132);
-        line(bestBird.x-1, bestBird.y, bestBird.x-1, bestBird.y + bestBird.vision6);
-        line(bestBird.x-1, bestBird.y + bestBird.vision6, bestBird.x-26, bestBird.y + bestBird.vision6);
-
-        // Vision 7  Furthest Below (minus sign)
-        stroke(128,20,68);
-        line(bestBird.x - 1, bestBird.y, bestBird.x - 1, bestBird.y - bestBird.vision7);
-        line(bestBird.x - 1, bestBird.y - bestBird.vision7, bestBird.x - 26, bestBird.y - bestBird.vision7);
-
-
-        // Vision 0 y velocity (here for layering's sake)
-        strokeWeight(2);
-        stroke(255, 255, 0);
-        fill(255, 128, 0);
-        line(bestBird.x, bestBird.y, bestBird.x, bestBird.y + 3*bestBird.vision0);
-        ellipse(bestBird.x, bestBird.y + 3*bestBird.vision0, 4, 4);
-
-        // Vision 8-9 Wave
-        strokeWeight(2);
-        stroke(255,255,255);
-        fill(128, 128, 128);
-        line(bestBird.x, bestBird.y, bestBird.x + 10* bestBird.vision8, bestBird.y + 10* bestBird.vision9);
-        ellipse(bestBird.x + 10* bestBird.vision8, bestBird.y + 10* bestBird.vision9, 4, 4);
-
-    //}
+      }
 
     }
     //------------------------------------------------------------------------------------------------------------------------------------------
@@ -213,6 +156,7 @@ class Population {
   //------------------------------------------------------------------------------------------------------------------------------------------
   //seperate this.players into this.species based on how similar they are to the leaders of each this.species in the previousthis.gen
   speciate() {
+
       for (var s of this.species) { //empty this.species
         s.players = [];
       }

@@ -1,7 +1,7 @@
 class PipePair {
   constructor(firstPipe, previousPipe, upToRandNo) {
     var minDistFromEdge = 50;
-    this.gap = 200 + random(60);
+    this.gap = 210 + random(60);
     //this.gap = 160;
     this.maxPipeDifference = 620; // 320// max difference between gaps between pairs
     this.passed = false;
@@ -23,6 +23,11 @@ class PipePair {
     var randMult = .90 + random(.20);
     this.bottomPipe = new Pipe(false, this.bottomHeight, randMult);
     this.topPipe = new Pipe(true, this.topHeight, randMult);
+/*     if (previousPipe){
+      this.bottomPipe.x = previousPipe.bottomPipe.x + 500 + random(200);
+      this.topPipe.x = previousPipe.topPipe.x + 500 + random(200);
+   } */
+
   }
 
 
@@ -42,7 +47,7 @@ class PipePair {
 
   offScreen() {
 
-    var leftBounds = -1400;
+    var leftBounds = -1300;
     if (this.bottomPipe.x + this.bottomPipe.width < leftBounds) {
       return true;
     }

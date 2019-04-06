@@ -1,10 +1,11 @@
 class Pipe {
   constructor(isTop, height, randMult) {
-    this.width = 100;
+    this.width = 300;
     this.height = height;
-    this.x = canvas.width * 1.4; // updated
+    this.x = canvas.width * 1.5; // updated
     this.isTop = isTop;
     this.randomMultiplier = randMult;
+    this.image = "";
     //this.randomMultiplier = random(5);
     if (isTop) {
       this.topY = 0;
@@ -16,16 +17,26 @@ class Pipe {
   }
 
   show() {
-    // fill(0, 204, 0);
-    // rect(this.x, this.topY, this.width, this.height);
 
     if (this.isTop) {
-      //image(topPipeSprite, this.x, this.topY + this.height - 800);
-      
-      image(coralTop1, this.x, this.topY + this.height - 800);
 
+      image(coralTop1, this.x, this.topY + this.height - 800);
+      this.image = "coralTop1";  
+
+/*        var whichPic = random(4);
+
+       if (whichPic <=2){
+        image(coralTop1, this.x, this.topY + this.height - 800);
+        this.image = "coralTop1";        
+       }
+       else{
+        image(coralTop2, this.x, this.topY + this.height - 450);
+        this.image = "coralTop2";
+       } */
+      
     } else {
       image(coral1, this.x, this.topY);
+      this.image = "coral1";
     }
 
   }
@@ -33,7 +44,9 @@ class Pipe {
   update() {
     // add slight wave factor
     this.x -= panSpeed * this.randomMultiplier + waveX;
-    //this.x -= panSpeed;
+    this.topY -=  waveY/6;
+    this.bottomY -= waveY/6;
+  
   }
 
   colided(p) {

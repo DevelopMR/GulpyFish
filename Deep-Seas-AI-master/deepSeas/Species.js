@@ -8,12 +8,17 @@ class Species {
     this.staleness = 0; //how many generations the species has gone without an improvement
     this.rep;
 
+    speciesCount++; // global variable tsk tsk
+    this.speciesIndex = speciesCount;
+
     //--------------------------------------------
     //coefficients for testing compatibility
     this.excessCoeff = 1;
     this.weightDiffCoeff = 0.5;
     this.compatibilityThreshold = 3;
     if (p) {
+
+      p.species = speciesCount;
       this.players.push(p);
       //since it is the only one in the species it is by default the best
       this.bestFitness = p.fitness;
@@ -42,6 +47,10 @@ class Species {
   //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //add a player to the species
   addToSpecies(p) {
+
+    // 
+    p.species = this.speciesIndex;
+
     this.players.push(p);
   }
 
@@ -159,6 +168,10 @@ class Species {
 
     }
     baby.brain.mutate(innovationHistory); //mutate that baby brain
+
+    // test if baby is new species
+
+    //baby.species++;
 
     return baby;
   }

@@ -5,7 +5,7 @@ var headwind = -.1;
 var waveX = 0; // wave y velocity
 var waveY = 0; // wave y velocity
 var waveCycle = 0; // counter from 0 -360
-var waveSize = 4; //4; // 5 in miles CHANGE THIS TO INCREASWE WAVE SWELL
+var waveSize = 4;  // 5 in miles CHANGE THIS TO INCREASWE WAVE SWELL
 var player;
 
 var pipes;
@@ -25,6 +25,7 @@ var dieOff = false;
 
 var nextConnectionNo = 1000;
 var population;
+var speciesCount = 0; // global variable (yuck) for number of species
 var speed = 60; //speed = 60;
 
 var superSpeed = 1;
@@ -51,16 +52,37 @@ var coralTop1;
 function preload() {
   if (isChristmas) {
     //birdSprite = loadImage("images/christmasBerd.png");
-    birdSprite = loadImage("images/BigFish.png");
-    bestBirdSprite = loadImage("images/BigFishBestFish.png");
+    birdSprite = loadImage("images/FishGen0Drab.gif");
+    //bestBirdSprite = loadImage("images/BigFishBestFish.png");
+    bestBirdSprite = loadImage("images/BestFishAni.gif");
+
+    fishGen1Sprite = loadImage("images/FishGen0Drab.gif");
+    fishGen2Sprite = loadImage("images/FishGen1.gif");
+    fishGen3Sprite = loadImage("images/FishGen3.gif");
+    fishGen4Sprite = loadImage("images/FishGen4.gif");
+    fishGen5Sprite = loadImage("images/FishGen5.gif");
+    fishGen6Sprite = loadImage("images/FishGen6.gif");
+    fishGen7Sprite = loadImage("images/FishGen7.gif");
+    fishGen8Sprite = loadImage("images/FishGen8.gif");
+    fishGen9Sprite = loadImage("images/FishGen9.gif");
+    fishGen10Sprite = loadImage("images/FishGen10.gif");
+    fishGen11Sprite = loadImage("images/FishGen11.gif");
+    fishGen12Sprite = loadImage("images/FishGen12.gif");
+    fishGen13Sprite = loadImage("images/FishGen13.gif");
+    fishGen14Sprite = loadImage("images/FishGen14.gif");
+    fishGen15Sprite = loadImage("images/FishGen15.gif");
+    fishGen16Sprite = loadImage("images/FishGen2.gif");
+
     coral1 = loadImage("images/Coral.png");
     coralTop1 = loadImage("images/CoralTop1.png");
+    coralTop2 = loadImage("images/CoralTop2.png");
+    waveDial = loadImage("images/waveDial.png"); // 139 x 138 px
 
   } else {
     birdSprite = loadImage("images/fatBird.png");
   }
-  topPipeSprite = loadImage("images/full pipe top.png");
-  bottomPipeSprite = loadImage("images/full pipe bottom.png");
+  //topPipeSprite = loadImage("images/full pipe top.png");
+  //bottomPipeSprite = loadImage("images/full pipe bottom.png");
   backgroundSprite = loadImage("images/backgroundOcean2.png");
   groundSprite = loadImage("images/groundPiece.png");
 
@@ -70,12 +92,11 @@ function setup() {
   window.canvas = createCanvas(1000, 800); //window.canvas = createCanvas(600, 800);
 
   player = new Player();
-  // pipes = new PipePair(true);
-  // pipes2 = new PipePair(false, pipes);
-  // pipes2.setX(1.5 * canvas.width + pipes2.topPipe.width / 2);
+  
   ground = new Ground();
 
   pauseBecauseDead = false;
+
 
   population = new Population(1000);
   humanPlayer = new Player();
@@ -91,12 +112,12 @@ function draw() {
   waveX = waveSize * Math.cos(waveCycle*Math.PI/180);
   waveY = waveSize * Math.sin(waveCycle*Math.PI/180);
 
-  drawToScreen();
+  drawToScreen(waveCycle);
 
   // showHumanPlaying(); // force
   if (showBestEachGen) { //show the best of each gen
     showBestPlayersForEachGeneration();
-  } else if (humanPlaying) { //if the user is controling the ship[
+  } else if (humanPlaying) { // if the user is controling the ship
     showHumanPlaying();
   } else if (runBest) { // if replaying the best ever game
     showBestEverPlayer();
@@ -110,7 +131,22 @@ function draw() {
   }
   writeInfo();
   drawBrain();
+  drawWave(waveCycle);
 }
+
+function drawWave(waveCyc){
+  // location 10, 680
+  // size 110 x 110 .. half  55 55
+  push();
+  translate(910, 60); 
+  angleMode(DEGREES);
+  rotate(waveCyc + 90); 
+  image(waveDial,  -55, -55); 
+  pop();
+  angleMode(RADIANS);
+}
+
+
 //-----------------------------------------------------------------------------------
 function showBestPlayersForEachGeneration() {
   if (!genPlayerTemp.dead) { //if current gen player is not dead then update it
@@ -153,10 +189,18 @@ function showBestEverPlayer() {
 }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 //draws the display screen
-function drawToScreen() {
+function drawToScreen(waveCyc) {
   if (!showNothing) {
     //pretty stuff
     image(backgroundSprite, 0, 0, canvas.width, canvas.height);
+
+    // wave swell
+    fill(0,2,183, 80 - 80 * Math.sin(waveCyc*Math.PI/180));
+    rect(0,0, 1000, 800);
+    
+    // waveX = waveSize * Math.cos(waveCycle*Math.PI/180);
+    // waveY = waveSize * Math.sin(waveCycle*Math.PI/180);
+
     // showAll();
     // updateAll();
     // drawBrain();
@@ -215,11 +259,16 @@ function writeInfo() {
 
   } else {
     var bestCurrentPlayer = population.getCurrentBest();
+    fill(255,255,200,200);
+    stroke(255,255,200,200);
+    textSize(34);
+    strokeWeight(1);
+    textFont('Century Gothic');
+    text(bestCurrentPlayer.score, 911, 62); 
 
-    text(bestCurrentPlayer.score, canvas.width / 2, 50); //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<replace
+    fill(255);
     textSize(26);
     textAlign(LEFT);
-    //textFont('Berlin Sans FB Demi');
     textFont('Arial Black');
     text("GENERATION " + population.gen, 10, 755);
 
